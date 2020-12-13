@@ -7,14 +7,19 @@ import java.util.*;
  * Description : An agenda that stores events
  */
 public class Agenda {
+    
+    public Set<Event> lesEvents = new HashSet<>();
+    ArrayList<Event> aujourdhui = new ArrayList<>();
     /**
      * Adds an event to this agenda
      *
      * @param e the event to add
      */
     public void addEvent(Event e) {
-        // TODO : implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+        lesEvents.stream().filter(evenement -> (evenement.equals(e))).forEachOrdered(_item -> {
+            lesEvents.remove(e);
+        });
+lesEvents.add(e);
     }
 
     /**
@@ -24,7 +29,11 @@ public class Agenda {
      * @return and iteraror to the events that occur on that day
      */
     public List<Event> eventsInDay(LocalDate day) {
-        // TODO : implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+        for (Event e1 : lesEvents) {
+            if (e1.isInDay(day)){
+                aujourdhui.add(e1);
+            }
+        }
+        return aujourdhui;
     }
 }
