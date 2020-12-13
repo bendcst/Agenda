@@ -8,18 +8,16 @@ import java.util.*;
  */
 public class Agenda {
     
-    public Set<Event> lesEvents = new HashSet<>();
-    ArrayList<Event> aujourdhui = new ArrayList<>();
+    public ArrayList<Event> lesEvents = new ArrayList<>();
+    public ArrayList<Event> lesEventsDAujourdhui = new ArrayList<>();
+    public ArrayList<Event> lesTitresDEvents = new ArrayList<>();
     /**
      * Adds an event to this agenda
      *
      * @param e the event to add
      */
     public void addEvent(Event e) {
-        lesEvents.stream().filter(evenement -> (evenement.equals(e))).forEachOrdered(_item -> {
-            lesEvents.remove(e);
-        });
-lesEvents.add(e);
+        lesEvents.add(e);
     }
 
     /**
@@ -31,9 +29,34 @@ lesEvents.add(e);
     public List<Event> eventsInDay(LocalDate day) {
         for (Event e1 : lesEvents) {
             if (e1.isInDay(day)){
-                aujourdhui.add(e1);
+                lesEventsDAujourdhui.add(e1);
             }
         }
-        return aujourdhui;
+        return lesEventsDAujourdhui;
+    }
+     /**
+     * Trouver les événements de l'agenda en fonction de leur titre
+     * @param title le titre à rechercher
+     * @return les événements qui ont le même titre
+     */
+    public List<Event> findByTitle(String title) {
+        this.lesEvents.forEach((e) -> {
+            if (e.getTitle().equals(title)) {
+                this.lesTitresDEvents.add(e);
+            }
+        });
+        return this.lesTitresDEvents;
+    }
+    
+    /**
+     * Déterminer s’il y a de la place dans l'agenda pour un événement
+     * @param e L'événement à tester (on se limitera aux événements simples)
+     * @return vrai s’il y a de la place dans l'agenda pour cet événement
+     */
+    public boolean isFreeFor(Event e) {
+        LocalDate jour = e.getStart().toLocalDate();
+        if (lesEventsDAujourdhui.contains(e)){
+            return false;
+    } return true;
     }
 }
