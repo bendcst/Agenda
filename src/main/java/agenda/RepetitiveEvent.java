@@ -8,9 +8,10 @@ import java.time.temporal.ChronoUnit;
  * Description : A repetitive Event
  */
 public class RepetitiveEvent extends Event {
-    
+
     public ChronoUnit frequency;
-    private ArrayList<LocalDate> lesExceptions = new ArrayList<>();
+    private final ArrayList<LocalDate> lesExceptions = new ArrayList<>();
+
     /**
      * Constructs a repetitive event
      *
@@ -43,12 +44,22 @@ public class RepetitiveEvent extends Event {
      * @return the type of repetition
      */
     public ChronoUnit getFrequency() {
-        return frequency;    
+        return frequency;
     }
-    
-   /* @Override
-    public boolean isInDay(LocalDate aDay){
-        
-    } */
+
+    @Override
+    public boolean isInDay(LocalDate aDay) {
+        LocalDate dateBoucle = this.getStart().toLocalDate();
+        if (lesExceptions.contains(aDay)) {
+            return false;
+        }
+        while (aDay.isEqual(dateBoucle) || aDay.isAfter(dateBoucle)) {
+            if (aDay.isEqual(dateBoucle)) {
+                return true;
+            }
+            dateBoucle = dateBoucle.plus(1, frequency);
+        }
+        return true;
+    }
 
 }
